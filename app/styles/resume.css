@@ -1,0 +1,72 @@
+.top {
+    position: fixed;
+    width: 100%;
+    height: 40px;
+    left: 0;
+    top: 0;
+    background-color: #ffd300;
+    line-height: 40px;
+    font-size: 20px;
+    color: #713c0b;
+}
+.top>span:first-child {
+    display: inline-block;
+    padding: 0 10px;
+    margin-right: 10px;
+    border-right: solid 1px;
+}
+.resume-block {
+    height: 400px;
+    width: 600px;
+    margin: 100px auto;
+    border: solid 1px #cccccc;
+    font-size: 14px;
+    color: #666666;
+    font-family: "微软雅黑";
+}
+.resume-block .upload-img {
+    position: relative;
+    width: 80px;
+    margin: 0 auto;
+    padding-top: 100px;
+}
+.resume-block .upload-img .upload-icon {
+    width: 100%;
+    height: 100px;
+    background-color: rgb(239,247,250);
+    color: rgb(134,167,186);
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 100px;
+}
+.resume-block .upload-img .upload-icon:before {
+    content: '';
+    position: absolute;
+    right: 0;
+    display: inline-block;
+    border-style: solid;
+    border-width: 15px;
+    width: 0;
+    height: 0;
+    border-color: rgb(239,247,250) rgb(239,247,250) rgb(203,224,234) rgb(203,224,234);
+}
+.resume-block p {
+    line-height: 21px;
+    margin: 10px;
+    text-align: center;
+}
+.input-file {
+    opacity: 0;
+    width: 90px;
+}
+.upload-view {
+    position: absolute;
+    display: inline-block;
+    width: 90px;
+    text-align: center;
+    color: #38f;
+    cursor: pointer;
+    margin-left: -90px;
+    line-height: 21px;
+}

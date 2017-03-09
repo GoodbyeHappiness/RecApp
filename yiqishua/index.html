@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>一起刷工作</title>
+
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- Place favicon.ico in the root directory -->
+
+    <link rel="stylesheet" href="styles/vendor.css">
+
+    <link rel="stylesheet" href="styles/main.css">
+
+</head>
+<body ng-app="recApp">
+<!--[if lt IE 10]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<div class="wrapper" ng-controller="recControl" ng-cloak>
+    <div class="rec-refresh animation-long" ng-class="{'fadeOut':stateFlag == 1}">
+        <div class="rec-block" ng-repeat="item in regulations" ng-if="$index >= hideRegulations"
+             ng-style="{'z-index':(regulations.length - $index)*10}">
+            <div class="animation" ng-style="{opacity:($index == currentIndex)?1:0}">
+                <h4 ng-bind="item.title"></h4>
+                <div class="rec-attr">
+                    <div class="pull-left text-left attr-count">
+                        <div>
+                            <span class="text-brown pull-left">热门指数：</span>
+                            <span class="text-yellow pull-left">
+                                <i class="glyphicon glyphicon-heart" ng-if="item.hotCount > 0"></i>
+                                <i class="glyphicon glyphicon-heart" ng-if="item.hotCount > 1"></i>
+                                <i class="glyphicon glyphicon-heart" ng-if="item.hotCount > 2"></i>
+                                <i class="glyphicon glyphicon-heart" ng-if="item.hotCount > 3"></i>
+                                <i class="glyphicon glyphicon-heart" ng-if="item.hotCount > 4"></i>
+                            </span>
+                        </div>
+                        <div>
+                            <span class="text-brown pull-left">心仪指数：</span>
+                            <span class="text-yellow pull-left">
+                                <i class="glyphicon glyphicon-heart" ng-if="item.likeCount > 0"></i>
+                                <i class="glyphicon glyphicon-heart" ng-if="item.likeCount > 1"></i>
+                                <i class="glyphicon glyphicon-heart" ng-if="item.likeCount > 2"></i>
+                                <i class="glyphicon glyphicon-heart" ng-if="item.likeCount > 3"></i>
+                                <i class="glyphicon glyphicon-heart" ng-if="item.likeCount > 4"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="pull-right">
+                        <div class="attr-label text-brown background-yellow">
+                            今日已刷32<br>
+                            累计：1342
+                        </div>
+                    </div>
+                </div>
+                <article class="text-left">
+                    <p ng-bind-html="item.content | trustedHtml"></p>
+                    <safetag></safetag>
+                </article>
+                <div class="rec-views-person">
+                    <div class="rec-views-title">他们也来过</div>
+                    <div class="users-img">
+                        <img src="images/user-img.png">
+                        <img src="images/user-img.png">
+                        <img src="images/user-img.png">
+                        <img src="images/user-img.png">
+                        <img src="images/user-img.png">
+                        <img src="images/user-img.png">
+                        <img src="images/user-img.png">
+                        <img src="images/user-img.png">
+                        <img src="images/user-img.png">
+                        <img src="images/user-img.png">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="rec-options">
+            <div class="col-xs-4 text-ellipsis" ng-click="backMain()">
+                <span class="opt-style text-brown text-ellipsis"><i class="glyphicon glyphicon-share-alt"></i>返回主页</span>
+            </div>
+            <div class="col-xs-4 background-yellow reg-like" ng-class="{'hasCollect':regulations[currentIndex].is_collect}" ng-click="collect()">
+                <span class="opt-style text-brown text-ellipsis" ng-if="!regulations[currentIndex].is_collect">收藏本篇</span>
+                <span class="opt-style text-yellow text-ellipsis" ng-if="regulations[currentIndex].is_collect">已收藏</span>
+            </div>
+            <div class="col-xs-4 background-brown resume-post" ng-class="{'position-select':positionSelect}">
+                <span class="opt-style text-ellipsis" ng-click="togglePositions()" ng-if="!positionSelect">投递简历</span>
+                <span class="opt-style text-ellipsis" ng-click="togglePositions()" ng-if="positionSelect">取消投递</span>
+            </div>
+            <div class="position-post-block" ng-show="positionSelect">
+                <div class="col-xs-12 labels-position" ng-show="!positionSelected.status">
+                    <div class="position-label text-brown" ng-click="choosePosition('PHP工程师')">PHP工程师</div>
+                    <div class="position-label text-brown" ng-click="choosePosition('PHP工程师')">PHP工程师</div>
+                    <div class="position-label text-brown" ng-click="choosePosition('PHP工程师')">PHP工程师</div>
+                    <div class="position-label text-brown" ng-click="choosePosition('PHP工程师')">PHP工程师</div>
+                    <div class="position-label text-brown" ng-click="choosePosition('PHP工程师')">PHP工程师</div>
+                </div>
+                <div class="col-xs-1 labels-position hide" ng-show="!positionSelected.status" ng-click="hidePositions()">x</div>
+                <div class="col-xs-9 input-position"><input class="form-control" ng-model="positionSelected.target"></div>
+                <div class="col-xs-3 text-left btn-post"><button class="btn btn-warning form-control" ng-click="postPosition()">发送</button></div>
+            </div>
+        </div>
+    </div>
+    <div class="rec-main animation-long" ng-class="{'slideOut':stateFlag != 1}">
+        <div class="main-left pull-left">
+            <div class="left-block">
+                <a class="left-block-inside" href="list.html?coll">
+                    <div class="main-left-img img-circle main-icon icon-coll"></div>
+                    <p class="main-left-title">收藏<br>列表</p>
+                </a>
+            </div>
+            <div class="left-block">
+                <a class="left-block-inside" href="list.html?view">
+                    <div class="main-left-img img-circle main-icon icon-view"></div>
+                    <p class="main-left-title">浏览<br>列表</p>
+                </a>
+            </div>
+            <div class="left-block">
+                <a class="left-block-inside" href="list.html?post">
+                    <div class="main-left-img img-circle main-icon icon-post"></div>
+                    <p class="main-left-title">投递<br>记录</p>
+                </a>
+            </div>
+            <div class="left-block">
+                <a class="left-block-inside" href="upload.html">
+                    <div class="main-left-img img-circle main-icon icon-upload"></div>
+                    <p class="main-left-title">上传<br>简历</p>
+                </a>
+            </div>
+            <div class="left-block height-auto">
+                <a class="left-block-inside">
+                    <div class="main-left-img img-circle main-icon icon-intro"></div>
+                    <p class="main-left-title">产品<br>介绍</p>
+                </a>
+            </div>
+        </div>
+        <div class="main-right pull-left">
+            <div class="main-right-block border-light-brown">
+                <img class="img-title" src="images/main-img.png">
+            </div>
+            <div class="main-right-block border-light-brown">
+                <div class="user-wrapper">
+                    <div class="main-right-user img-circle"><img class="img-circle" src="images/user-img.png"></div>
+                    <span class="user-name text-brown">hi,比企谷八幡<i class="glyphicon glyphicon-play"></i></span>
+                </div>
+            </div>
+            <div class="main-right-block margin-top-s">
+                <div class="main-txet-count text-ellipsis"><span>今日刷简章数量：</span>
+                    <span class="main-num">666</span><i class="glyphicon glyphicon-plus"></i>
+                </div>
+            </div>
+            <div class="main-right-block">
+                <div class="main-txet-count text-ellipsis"><span>总计已刷简章数量：</span>
+                    <span class="main-num">66666</span>
+                </div>
+            </div>
+            <div class="main-right-block">
+                <div class="main-txet-count text-ellipsis"><span>总量超越用户：</span>
+                    <span class="main-num">666</span>
+                </div>
+            </div>
+            <div class="main-right-block">
+                <div class="main-txet-count text-ellipsis"><span>本周排名：</span>
+                    <span class="main-num">666</span><i class="glyphicon glyphicon-arrow-up"></i>
+                </div>
+            </div>
+            <div class="main-right-block">
+                <div class="main-txet-count text-ellipsis"><span>本周排名明：</span>
+                    <span class="main-num">666</span><i class="glyphicon glyphicon-arrow-up"></i>
+                </div>
+            </div>
+            <div class="refresh-begin text-center">
+                <img src="images/btn-refresh.png">
+            </div>
+            <!--<div class="height-test">看看底部在哪</div>-->
+        </div>
+    </div>
+</div>
+<div class="alert-message">
+    <div class="text-center">
+        <span class="text-tip">提示消息！</span>
+    </div>
+</div>
+<script src="scripts/vendor.js"></script>
+
+<script src="scripts/plugins.js"></script>
+
+<script src="scripts/main.js"></script>
+</body>
+</html>

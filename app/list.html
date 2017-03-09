@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>一起刷工作</title>
+
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- Place favicon.ico in the root directory -->
+
+    <!-- build:css styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css"/>
+    <!--<link rel="stylesheet" href="/bower_components/Swiper/dist/css/swiper.css">-->
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:css styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+
+</head>
+<body ng-app="recApp">
+<!--[if lt IE 10]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<div class="wrapper" ng-controller="listControl" ng-cloak>
+    <div class="view-wrapper" ng-if="pageState == 'view'">
+        <div class="rec-block list-rec-block">
+            <h4 ng-bind="selectRegulation.title"></h4>
+            <div class="rec-attr">
+                <div class="pull-left text-left attr-count">
+                    <div>
+                        <span class="text-brown pull-left">热门指数：</span>
+                            <span class="text-yellow pull-left">
+                                <i class="glyphicon glyphicon-heart" ng-if="selectRegulation.hotCount > 0"></i>
+                                <i class="glyphicon glyphicon-heart" ng-if="selectRegulation.hotCount > 1"></i>
+                                <i class="glyphicon glyphicon-heart" ng-if="selectRegulation.hotCount > 2"></i>
+                                <i class="glyphicon glyphicon-heart" ng-if="selectRegulation.hotCount > 3"></i>
+                                <i class="glyphicon glyphicon-heart" ng-if="selectRegulation.hotCount > 4"></i>
+                            </span>
+                    </div>
+                    <div>
+                        <span class="text-brown pull-left">心仪指数：</span>
+                            <span class="text-yellow pull-left">
+                                <i class="glyphicon glyphicon-heart" ng-if="selectRegulation.likeCount > 0"></i>
+                                <i class="glyphicon glyphicon-heart" ng-if="selectRegulation.likeCount > 1"></i>
+                                <i class="glyphicon glyphicon-heart" ng-if="selectRegulation.likeCount > 2"></i>
+                                <i class="glyphicon glyphicon-heart" ng-if="selectRegulation.likeCount > 3"></i>
+                                <i class="glyphicon glyphicon-heart" ng-if="selectRegulation.likeCount > 4"></i>
+                            </span>
+                    </div>
+                </div>
+                <div class="pull-right">
+                    <div class="attr-label text-brown background-yellow">
+                        今日已刷32<br>
+                        累计：1342
+                    </div>
+                </div>
+            </div>
+            <article class="text-left">
+                <p ng-bind-html="selectRegulation.content | trustedHtml"></p>
+                <safetag></safetag>
+            </article>
+            <div class="rec-views-person">
+                <div class="rec-views-title">他们也来过</div>
+                <div class="users-img">
+                    <img src="images/user-img.png">
+                    <img src="images/user-img.png">
+                    <img src="images/user-img.png">
+                    <img src="images/user-img.png">
+                    <img src="images/user-img.png">
+                    <img src="images/user-img.png">
+                    <img src="images/user-img.png">
+                    <img src="images/user-img.png">
+                    <img src="images/user-img.png">
+                    <img src="images/user-img.png">
+                </div>
+            </div>
+        </div>
+        <div class="rec-options list-rec-options">
+            <div class="col-xs-4 text-ellipsis" ng-click="backList()">
+                <span class="opt-style text-brown text-ellipsis"><i class="glyphicon glyphicon-share-alt"></i>返回列表</span>
+            </div>
+            <div class="col-xs-4 background-yellow reg-like">
+                <span class="opt-style text-brown text-ellipsis">收藏本篇</span>
+            </div>
+            <div class="col-xs-4 background-brown resume-post" ng-class="{'position-select':positionSelect}">
+                <span class="opt-style text-ellipsis" ng-click="togglePositions()" ng-if="!positionSelect">投递简历</span>
+                <span class="opt-style text-ellipsis" ng-click="togglePositions()" ng-if="positionSelect">取消投递</span>
+            </div>
+            <div class="position-post-block" ng-show="positionSelect">
+                <div class="col-xs-12 labels-position" ng-show="!positionSelected.status">
+                    <div class="position-label text-brown" ng-click="choosePosition('PHP工程师')">PHP工程师</div>
+                    <div class="position-label text-brown" ng-click="choosePosition('PHP工程师')">PHP工程师</div>
+                    <div class="position-label text-brown" ng-click="choosePosition('PHP工程师')">PHP工程师</div>
+                    <div class="position-label text-brown" ng-click="choosePosition('PHP工程师')">PHP工程师</div>
+                    <div class="position-label text-brown" ng-click="choosePosition('PHP工程师')">PHP工程师</div>
+                </div>
+                <div class="col-xs-1 labels-position hide" ng-show="!positionSelected.status" ng-click="hidePositions()">x</div>
+                <div class="col-xs-9 input-position"><input class="form-control" ng-model="positionSelected.target"></div>
+                <div class="col-xs-3 text-left btn-post"><button class="btn btn-warning form-control" ng-click="postPosition()">发送</button></div>
+            </div>
+        </div>
+    </div>
+    <div class="list-wrapper" ng-if="pageState == 'list'">
+        <h4 ng-bind="title"></h4>
+        <ul>
+            <li ng-click="viewRegulation()">亚信科技（中国）有限公司<span class="pull-right"><i class="glyphicon glyphicon-chevron-right"></i></span></li>
+            <li>亚信科技（中国）有限公司<span class="pull-right"><i class="glyphicon glyphicon-chevron-right"></i></span></li>
+            <li>亚信科技（中国）有限公司<span class="pull-right"><i class="glyphicon glyphicon-chevron-right"></i></span></li>
+            <li>亚信科技（中国）有限公司<span class="pull-right"><i class="glyphicon glyphicon-chevron-right"></i></span></li>
+            <li>亚信科技（中国）有限公司<span class="pull-right"><i class="glyphicon glyphicon-chevron-right"></i></span></li>
+            <li>亚信科技（中国）有限公司<span class="pull-right"><i class="glyphicon glyphicon-chevron-right"></i></span></li>
+            <li>亚信科技（中国）有限公司<span class="pull-right"><i class="glyphicon glyphicon-chevron-right"></i></span></li>
+            <li>亚信科技（中国）有限公司<span class="pull-right"><i class="glyphicon glyphicon-chevron-right"></i></span></li>
+            <li>亚信科技（中国）有限公司<span class="pull-right"><i class="glyphicon glyphicon-chevron-right"></i></span></li>
+            <li>亚信科技（中国）有限公司<span class="pull-right"><i class="glyphicon glyphicon-chevron-right"></i></span></li>
+            <li>亚信科技（中国）有限公司<span class="pull-right"><i class="glyphicon glyphicon-chevron-right"></i></span></li>
+            <li>亚信科技（中国）有限公司<span class="pull-right"><i class="glyphicon glyphicon-chevron-right"></i></span></li>
+            <li>亚信科技（中国）有限公司<span class="pull-right"><i class="glyphicon glyphicon-chevron-right"></i></span></li>
+            <li>亚信科技（中国）有限公司<span class="pull-right"><i class="glyphicon glyphicon-chevron-right"></i></span></li>
+            <li>亚信科技（中国）有限公司<span class="pull-right"><i class="glyphicon glyphicon-chevron-right"></i></span></li>
+            <li>亚信科技（中国）有限公司<span class="pull-right"><i class="glyphicon glyphicon-chevron-right"></i></span></li>
+            <li>亚信科技（中国）有限公司<span class="pull-right"><i class="glyphicon glyphicon-chevron-right"></i></span></li>
+            <li>亚信科技（中国）有限公司<span class="pull-right"><i class="glyphicon glyphicon-chevron-right"></i></span></li>
+        </ul>
+    </div>
+    <a ng-if="pageState == 'list'" class="back-main background-yellow text-center" href="index.html"><i class="glyphicon glyphicon-share-alt"></i>返回主页</a>
+</div>
+<div class="alert-message">
+    <div class="text-center">
+        <span class="text-tip">提示消息！</span>
+    </div>
+</div>
+<!-- build:js scripts/vendor.js -->
+<!-- bower:js -->
+<script src="/bower_components/jquery/dist/jquery.js"></script>
+<script src="/bower_components/angular/angular.js"></script>
+<!-- endbower -->
+<!-- endbuild -->
+
+<!-- build:js scripts/plugins.js -->
+<script src="/bower_components/bootstrap/js/affix.js"></script>
+<script src="/bower_components/bootstrap/js/alert.js"></script>
+<script src="/bower_components/bootstrap/js/dropdown.js"></script>
+<script src="/bower_components/bootstrap/js/tooltip.js"></script>
+<script src="/bower_components/bootstrap/js/modal.js"></script>
+<script src="/bower_components/bootstrap/js/transition.js"></script>
+<script src="/bower_components/bootstrap/js/button.js"></script>
+<script src="/bower_components/bootstrap/js/popover.js"></script>
+<script src="/bower_components/bootstrap/js/carousel.js"></script>
+<script src="/bower_components/bootstrap/js/scrollspy.js"></script>
+<script src="/bower_components/bootstrap/js/collapse.js"></script>
+<script src="/bower_components/bootstrap/js/tab.js"></script>
+<!--<script src="/bower_components/hammerjs/hammer.js"></script>-->
+<!--<script src="/bower_components/Swiper/dist/js/swiper.js"></script>-->
+<!-- endbuild -->
+
+<!-- build:js scripts/main.js -->
+<script src="scripts/main.js"></script>
+<!-- endbuild -->
+</body>
+</html>
